@@ -1,0 +1,7 @@
+{
+    "toolbar": [
+        { "id": "SCISSOR", "name": "Scissor"}
+        { "id": "GLUE", "name": "Glue"}
+        { "id": "ERASER", "name": "Eraser"}
+    ]
+  }
