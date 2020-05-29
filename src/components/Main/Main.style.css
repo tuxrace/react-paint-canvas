@@ -1,0 +1,26 @@
+.mainRoot {
+    width: 800px;
+    margin: 32px auto;
+    border: lightgray 1px solid;
+}
+.board {
+    width: 100%;
+    height: 800px;
+    background-color: #355BB7;
+}
+
+.toolbar {
+    background-color: #E1E0E0;
+    max-width: 100px;
+}
+
+.toolbarIcon {
+    margin: 4px 0;
+    border: grey 1px solid;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.toolbarIcon:hover {
+    background-color: lightskyblue;
+}

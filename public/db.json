@@ -1,0 +1,11 @@
+{
+    "toolbar": [
+        { "id": "SCISSOR", "name": "Scissor", "image": "scissor.svg"},
+        { "id": "GLUE", "name": "Glue",  "image": "glue.svg"},
+        { "id": "ERASER", "name": "Eraser",  "image": "eraser.svg"}
+    ],
+    "dimensions": {
+        "width": 500,
+        "height": 500
+    }
+}
