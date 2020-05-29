@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "09a284c8267f00a2116edb240e794aa1",
+    "revision": "d63fc2162ff96b4b8d3f34ea8fbb60fb",
     "url": "/react-paint-canvas/index.html"
   },
   {
