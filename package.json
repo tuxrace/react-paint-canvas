@@ -2,6 +2,7 @@
   "name": "react-paint-canvas",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://tuxrace.github.io/react-paint-canvas/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -11,8 +12,6 @@
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.19.2",
-    "concurrently": "^5.2.0",
-    "json-server": "^0.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -23,8 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "json-server": "json-server --watch db.json --port 3001",
-    "runServer": "concurrently \"npm start\" \"npm run json-server\""
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
   }
 }
