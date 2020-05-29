@@ -1,49 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Tool } from "../../types";
 
 type Props = {
-  tools: any[];
+  tools: Tool[];
 };
 
 const Toolbar: React.FC<Props> = (props) => {
   const { tools } = props;
-  const [refs, setRefs] = useState<any>([]);
 
-  useEffect(() => {
-    refs.length > 0 &&
-      refs.forEach((refItem: any) => {
-        const toolObject = refItem.current;
-        toolObject.addEventListener("dragstart", () => {
-          console.log("start");
-        });
-        toolObject.addEventListener("dragstop", () => {
-          console.log("stop");
-        });
-      });
-  }, [refs]);
-
-  useEffect(() => {
-    const newRefs =
-      tools.length > 0 && tools.map((item, idx) => React.createRef());
-    setRefs(newRefs);
-  }, [tools]);
-
-  const onDragStart = (e: any) => {
-    const { id } = e.target;
+  const onDragStart = (e: React.DragEvent) => {
+    const { id } = e.target as HTMLBaseElement;
     e.dataTransfer.setData("source", id);
   };
 
   return (
-    <div className="container column center">
-      {tools.length > 0 &&
+    <div className="container column center" data-testid="Toolbar-root">
+      {tools && tools.length > 0 &&
         tools.map((tool, idx) => {
           return (
             <div className="item" key={idx}>
               <img
-                id={tool.name}
+                id={tool.id}
                 src={`./images/${tool.image}`}
                 alt={tool.name}
                 height={48}
-                ref={refs[idx]}
                 draggable="true"
                 onDragStart={onDragStart}
                 className="toolbarIcon"

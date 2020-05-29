@@ -1,112 +1,88 @@
-import React, { useLayoutEffect, useRef } from 'react'
-import { TOOLS } from '../../contants';
+import React, { useLayoutEffect, useRef } from "react";
+import { TOOLS, SHAPES } from "../../contants";
 
-const { SCISSOR, GLUE, ERASER } = TOOLS;
-
+const { SCISSOR, ERASER } = TOOLS;
+const { RECT, CIRCLE, TRIANGLE } = SHAPES;
 type Props = {
-    type: string;
-    width?: number;
-    height?: number;
-    pixelRatio?: number;
-}
+  type: string;
+  width?: number;
+  height?: number;
+};
 
 const Shape: React.FC<Props> = (props) => {
-    const {
-        width = 200,
-        height = 200,
-        type,
-      } = props;
+  const { width = 200, height = 200, type } = props;
+  const canvas = useRef<any>(null);
 
-      const canvas = useRef<any>(null);
-      
-      const cutShape = (ctx: any) => {
-        ctx.clip();
-        ctx.beginPath();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.fillStyle = "#355BB7";
-        ctx.fillRect((160 / 2), 0, 24, 180);
-      };
+  // Shapes
+  const Rect = (ctx: any) => {
+    ctx.fillStyle = "green";
+    ctx.rect(16, 16, width, 120);
+    ctx.fill();
+  };
 
-      const removeShape = (ctx: any) => {
-        ctx.beginPath();
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.clearRect(0, 0, width, height);
-      };
+  const Circle = (ctx: any) => {
+    ctx.fillStyle = "yellow";
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, 80, 0, 2 * Math.PI);
+    ctx.fill();
+  };
 
-      const drawRect = (ctx: any, tool: string) => {
-        ctx.fillStyle = "green";
-        ctx.rect(16, 16, 160, 160);
-        ctx.fill();
-      }
+  const Triangle = (ctx: any) => {
+    ctx.fillStyle = "orange";
+    ctx.beginPath();
+    ctx.moveTo(90, 24);
+    ctx.lineTo(24, width);
+    ctx.lineTo(170, width);
+    ctx.fill();
+  };
 
-      const drawCircle = (ctx: any, tool: string) => {
-        ctx.fillStyle = "yellow";
-        ctx.beginPath();
-        ctx.arc(width / 2, height / 2, 80, 0, 2 * Math.PI);
-        ctx.fill();
-      }
+  const getShape: any = {
+    [RECT]: Rect,
+    [CIRCLE]: Circle,
+    [TRIANGLE]: Triangle,
+  };
 
-      const drawTriangle = (ctx: any, tool: string) => {
-        ctx.fillStyle = "orange";
-        ctx.beginPath();
-        ctx.moveTo(90, 24);
-        ctx.lineTo(24, 160);
-        ctx.lineTo(170, 160);
-        ctx.closePath();
-        ctx.fill();
-      }
+  // Tool Actions
+  const cutShape = (ctx: any) => {
+    ctx.fillStyle = "#355BB7";
+    ctx.fillRect(180 / 2, 0, 24, height);
+  };
 
-      const drawShape = (type: string, ctx: any, tool: string = 'Glue') => {
-        switch(type){
-            case 'rect': {
-                drawRect(ctx, tool)
-                if (tool === 'Scissor') {
-                    cutShape(ctx);
-                }
-                if (tool === 'Eraser') {
-                    removeShape(ctx);
-                }
-                break;
-            }
-            case 'circle': {
-                drawCircle(ctx, tool)
-                if (tool === 'Scissor') {
-                    cutShape(ctx);
-                }
-                if (tool === 'Eraser') {
-                    removeShape(ctx);
-                }
-                break;
-            }
-            case 'triangle': {
-                drawTriangle(ctx, tool)
-                if (tool === 'Scissor') {
-                    cutShape(ctx);
-                }
-                if (tool === 'Eraser') {
-                    removeShape(ctx);
-                }
-                break;
-            }
-        }
-      }
+  const removeShape = (ctx: any) => {
+    ctx.clearRect(0, 0, width, height);
+  };
 
-      const handleOnDrop = (e: any) => {
-        const tool = e.dataTransfer.getData("source");
-        const ctx = canvas.current.getContext("2d");
-        drawShape(type, ctx, tool);
-      }
+  const handleOnDrop = (e: React.DragEvent) => {
+    const tool = e.dataTransfer.getData("source");
+    const ctx = canvas.current.getContext("2d");
+    const drawShape = getShape[type];
 
-      useLayoutEffect(() => {
-        const ctx = canvas.current.getContext("2d");
-        ctx.save();
-        drawShape(type, ctx);
-      });
-    
-      const style = { width, height, border: "1px solid" };
-      return (
-        <canvas ref={canvas} width={width} height={height} style={style} onDrop={handleOnDrop} />
-      );
-}
+    if (tool === SCISSOR) {
+      cutShape(ctx);
+    } else if (tool === ERASER) {
+      removeShape(ctx);
+    } else {
+      drawShape(ctx);
+    }
+  };
 
-export default Shape
+  useLayoutEffect(() => {
+    const ctx = canvas.current.getContext("2d");
+    ctx.save();
+    const drawShape = getShape[type];
+    drawShape(ctx);
+  });
+
+  const style = { width, height };
+  return (
+    <canvas
+      ref={canvas}
+      width={width}
+      height={height}
+      style={style}
+      onDrop={handleOnDrop}
+    />
+  );
+};
+
+export default Shape;
