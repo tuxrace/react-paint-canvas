@@ -1,5 +1,5 @@
 # React paint canvas
-MS Paint clone using canvas using React
+MS Paint clone using canvas and React
 
 ## Working demo
 https://tuxrace.github.io/react-paint-canvas/
